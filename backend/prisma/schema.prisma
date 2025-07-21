@@ -1,0 +1,213 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User Management
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  firstName   String
+  lastName    String
+  role        String   @default("USER") // ADMIN, TREASURER, USER, VIEWER
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Audit trail
+  transactionsCreated Transaction[] @relation("CreatedBy")
+  transactionsUpdated Transaction[] @relation("UpdatedBy")
+
+  @@map("users")
+}
+
+// Removed enum for SQLite compatibility - using String field with constraints
+
+// Chart of Accounts - Transaction Types
+model TransactionType {
+  id           String        @id @default(cuid())
+  code         String        @unique // EXP, INC
+  name         String        // Expense, Income
+  description  String?
+  isActive     Boolean       @default(true)
+  transactions Transaction[]
+  categories   Category[]    // Added missing relation field
+
+  @@map("transaction_types")
+}
+
+// Main Categories (based on your lookup system)
+model Category {
+  id              String           @id @default(cuid())
+  code            String           @unique // EXP_CAT_01, INC_CAT_01
+  name            String           // CAMPAIGN EXPENSES, MEMBERSHIP DUES
+  description     String?
+  transactionType TransactionType? @relation(fields: [typeId], references: [id])
+  typeId          String?
+  isActive        Boolean          @default(true)
+  sortOrder       Int              @default(0)
+  
+  subCategories   SubCategory[]
+  transactions    Transaction[]
+  budgets         Budget[]         // Added missing relation field
+
+  @@map("categories")
+}
+
+// Sub Categories (detailed breakdown)
+model SubCategory {
+  id           String        @id @default(cuid())
+  code         String        @unique // EXP_CAT_01_SUB_01
+  name         String        // Advertising, Office Supplies
+  description  String?
+  category     Category      @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  isActive     Boolean       @default(true)
+  sortOrder    Int           @default(0)
+  
+  transactions Transaction[]
+
+  @@map("sub_categories")
+}
+
+// Bank Accounts
+model BankAccount {
+  id            String   @id @default(cuid())
+  bankName      String   // UBank, NAB, CASH
+  accountName   String   @unique // JE-UB - Old Chq Account (unique constraint added)
+  accountNumber String?
+  bsb           String?
+  accountType   String   // Cheque, Savings, Cash
+  isActive      Boolean  @default(true)
+  openingBalance Float   @default(0)
+  currentBalance Float   @default(0)
+  
+  transactions Transaction[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("bank_accounts")
+}
+
+// Main Transactions Table
+model Transaction {
+  id             String       @id @default(cuid())
+  date           DateTime
+  description    String
+  amount         Float
+  isIncome       Boolean      // true for income, false for expenses
+  
+  // Categorization
+  transactionType TransactionType? @relation(fields: [typeId], references: [id])
+  typeId          String?
+  category        Category?        @relation(fields: [categoryId], references: [id])
+  categoryId      String?
+  subCategory     SubCategory?     @relation(fields: [subCategoryId], references: [id])
+  subCategoryId   String?
+  
+  // Banking
+  bankAccount     BankAccount @relation(fields: [bankAccountId], references: [id])
+  bankAccountId   String
+  
+  // Reference and documentation
+  reference       String?     // Invoice number, receipt number
+  notes           String?
+  attachments     String?     // JSON array of file paths
+  
+  // Compliance and audit
+  isCompliant     Boolean     @default(true)
+  complianceNotes String?
+  financialYear   String      // 2024-25
+  quarter         Int         // 1, 2, 3, 4
+  
+  // Reconciliation
+  isReconciled    Boolean     @default(false)
+  reconciledAt    DateTime?
+  
+  // Audit trail
+  createdBy       User        @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById     String
+  createdAt       DateTime    @default(now())
+  updatedBy       User?       @relation("UpdatedBy", fields: [updatedById], references: [id])
+  updatedById     String?
+  updatedAt       DateTime    @updatedAt
+
+  @@map("transactions")
+}
+
+// Budget Planning (based on your annual budget sheet)
+model Budget {
+  id             String   @id @default(cuid())
+  financialYear  String   // 2024-25
+  category       Category @relation(fields: [categoryId], references: [id])
+  categoryId     String
+  
+  // Monthly budget amounts
+  jan            Float    @default(0)
+  feb            Float    @default(0)
+  mar            Float    @default(0)
+  apr            Float    @default(0)
+  may            Float    @default(0)
+  jun            Float    @default(0)
+  jul            Float    @default(0)
+  aug            Float    @default(0)
+  sep            Float    @default(0)
+  oct            Float    @default(0)
+  nov            Float    @default(0)
+  dec            Float    @default(0)
+  
+  totalBudget    Float    @default(0)
+  isActive       Boolean  @default(true)
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([financialYear, categoryId])
+  @@map("budgets")
+}
+
+// Compliance and Reporting
+model ComplianceReport {
+  id            String   @id @default(cuid())
+  reportType    String   // Annual Return, Quarterly Report
+  financialYear String
+  quarter       Int?
+  startDate     DateTime
+  endDate       DateTime
+  
+  totalIncome   Float
+  totalExpenses Float
+  netPosition   Float
+  
+  status        String   @default("DRAFT") // DRAFT, SUBMITTED, APPROVED
+  submittedAt   DateTime?
+  approvedAt    DateTime?
+  
+  reportData    String   // Detailed breakdown as JSON string
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("compliance_reports")
+}
+
+// System Configuration
+model SystemConfig {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("system_config")
+} 

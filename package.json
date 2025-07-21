@@ -1,0 +1,32 @@
+{
+  "name": "hbg-budget-app",
+  "version": "1.0.0",
+  "description": "Professional Political Party Accounting System for Homes Before Growth",
+  "scripts": {
+    "dev": "concurrently --kill-others --kill-others-on-fail \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "db:generate": "cd backend && npx prisma generate",
+    "db:push": "cd backend && npx prisma db push",
+    "db:studio": "cd backend && npx prisma studio",
+    "clean": "npm run kill:ports && echo 'Cleaned up all development ports'",
+    "kill:ports": "pkill -f 'node.*3000\\|node.*3005\\|next\\|nodemon' || echo 'No processes found on development ports'",
+    "check:ports": "echo 'Checking ports 3000 and 3005:' && (lsof -i :3000 -i :3005 || echo 'No processes using ports 3000 or 3005')",
+    "restart": "npm run clean && sleep 2 && npm run dev"
+  },
+  "keywords": [
+    "political-finance",
+    "accounting",
+    "transparency",
+    "financial-management",
+    "political-party"
+  ],
+  "author": "Homes Before Growth",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 
