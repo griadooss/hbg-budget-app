@@ -57,7 +57,11 @@ const loginLimiter = rateLimit({
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+  origin: [
+    'http://localhost:8080',
+    'https://frontend-jtxe8pi4y-johns-projects-fb03b396.vercel.app',
+    'https://frontend-3wvsi8lba-johns-projects-fb03b396.vercel.app'
+  ],
   credentials: true,
 }));
 
