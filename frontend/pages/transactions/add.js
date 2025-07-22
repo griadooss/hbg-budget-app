@@ -87,6 +87,15 @@ export default function AddTransaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted!');
+    console.log('Form data:', formData);
+    
+    // Validate required fields
+    if (!formData.amount || !formData.description || !formData.transactionDate || !formData.bankAccountId) {
+      setError('Please fill in all required fields: Amount, Description, Date, and Bank Account');
+      return;
+    }
+    
     setLoading(true);
     setError('');
     setSuccess('');
@@ -413,6 +422,7 @@ export default function AddTransaction() {
                 <button
                   type="submit"
                   disabled={loading}
+                  onClick={() => console.log('Add Transaction button clicked')}
                   className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
                 >
                   {loading ? 'Adding...' : 'Add Transaction'}
