@@ -63,6 +63,15 @@ export default function AddTransaction() {
     }
   };
 
+  // Filter categories based on transaction type
+  const filteredCategories = categories.filter(category => {
+    if (formData.type === 'INCOME') {
+      return category.transactionType?.code === 'INC' || category.code?.startsWith('INC_');
+    } else {
+      return category.transactionType?.code === 'EXP' || category.code?.startsWith('EXP_');
+    }
+  });
+
   const handleCategoryChange = async (categoryId) => {
     setFormData(prev => ({ ...prev, categoryId, subCategoryId: '' }));
     
@@ -239,7 +248,7 @@ export default function AddTransaction() {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, type: 'INCOME' }))}
+                    onClick={() => setFormData(prev => ({ ...prev, type: 'INCOME', categoryId: '', subCategoryId: '' }))}
                     className={`p-4 rounded-lg border-2 text-center transition-colors ${
                       formData.type === 'INCOME'
                         ? 'border-green-500 bg-green-50 text-green-700'
@@ -251,7 +260,7 @@ export default function AddTransaction() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData(prev => ({ ...prev, type: 'EXPENSE' }))}
+                    onClick={() => setFormData(prev => ({ ...prev, type: 'EXPENSE', categoryId: '', subCategoryId: '' }))}
                     className={`p-4 rounded-lg border-2 text-center transition-colors ${
                       formData.type === 'EXPENSE'
                         ? 'border-red-500 bg-red-50 text-red-700'
@@ -329,12 +338,12 @@ export default function AddTransaction() {
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Select a category</option>
-                  {categories && categories.length > 0 ? categories.map(category => (
+                  {filteredCategories && filteredCategories.length > 0 ? filteredCategories.map(category => (
                     <option key={category.id} value={category.id}>
                       {category.name}
                     </option>
                   )) : (
-                    <option value="" disabled>No categories available</option>
+                    <option value="" disabled>No categories available for {formData.type.toLowerCase()} transactions</option>
                   )}
                 </select>
               </div>
