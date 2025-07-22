@@ -71,6 +71,7 @@ app.use(cors({
     'https://frontend-pkty6xg1c-johns-projects-fb03b396.vercel.app',
     'https://frontend-3rcws6lg7-johns-projects-fb03b396.vercel.app',
     'https://frontend-flzlcgoqw-johns-projects-fb03b396.vercel.app',
+    'https://frontend-p6dsj8he8-johns-projects-fb03b396.vercel.app',
     'https://homesbeforegrowth.org',
     'https://www.homesbeforegrowth.org'
   ],
