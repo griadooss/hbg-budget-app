@@ -149,7 +149,7 @@ export default function Reports() {
               {/* Export Options */}
               <div className="bg-white rounded-lg shadow p-6 mb-8">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Export Reports</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <button
                     onClick={() => downloadReport('csv')}
                     className="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50"
@@ -161,16 +161,7 @@ export default function Reports() {
                     </div>
                   </button>
                   
-                  <button
-                    onClick={() => downloadReport('pdf')}
-                    className="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50"
-                  >
-                    <div className="text-center">
-                      <div className="text-2xl mb-2">📄</div>
-                      <div className="font-medium">Export as PDF</div>
-                      <div className="text-sm text-gray-600">Printable format</div>
-                    </div>
-                  </button>
+
                   
                   <button
                     onClick={() => downloadReport('json')}
