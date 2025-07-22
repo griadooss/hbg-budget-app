@@ -109,10 +109,18 @@ export default function AddTransaction() {
         isIncome: formData.type === 'INCOME',
         bankAccountId: formData.bankAccountId,
         categoryId: formData.categoryId || null,
-        subCategoryId: formData.subCategoryId || null,
-        reference: formData.reference || null,
-        notes: formData.notes || null,
       };
+      
+      // Only add optional fields if they have values
+      if (formData.subCategoryId) {
+        requestData.subCategoryId = formData.subCategoryId;
+      }
+      if (formData.reference) {
+        requestData.reference = formData.reference;
+      }
+      if (formData.notes) {
+        requestData.notes = formData.notes;
+      }
       
       console.log('Submitting transaction data:', requestData);
       
