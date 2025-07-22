@@ -15,7 +15,7 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/auth/login`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
