@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   const fetchFinancialSummary = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/public/financial-summary');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/public/financial-summary`);
       const data = await response.json();
       
       if (response.ok) {

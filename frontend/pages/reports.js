@@ -30,7 +30,7 @@ export default function Reports() {
       const startDate = new Date(now.getFullYear(), 6, 1); // July 1st (Australian financial year)
       const endDate = new Date(now.getFullYear() + 1, 5, 30); // June 30th next year
       
-      const response = await fetch(`http://localhost:4000/api/reports/financial-summary?startDate=${startDate.toISOString().split('T')[0]}&endDate=${endDate.toISOString().split('T')[0]}`, {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/reports/financial-summary?startDate=${startDate.toISOString().split('T')[0]}&endDate=${endDate.toISOString().split('T')[0]}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ export default function Reports() {
   const downloadReport = async (type) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/reports/export/transactions?format=${type}`, {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/reports/export/transactions?format=${type}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
