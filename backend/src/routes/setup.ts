@@ -12,13 +12,13 @@ router.post('/database', async (req, res) => {
   try {
     console.log('Starting database setup...');
     
-    // Run Prisma migrations
-    console.log('Running Prisma migrations...');
-    await execAsync('npx prisma migrate deploy');
-    
-    // Generate Prisma client
+    // Generate Prisma client first
     console.log('Generating Prisma client...');
     await execAsync('npx prisma generate');
+    
+    // Run Prisma migrations
+    console.log('Running Prisma migrations...');
+    await execAsync('npx prisma db push');
     
     // Seed the database
     console.log('Seeding database...');
