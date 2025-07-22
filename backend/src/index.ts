@@ -61,7 +61,9 @@ app.use(cors({
   origin: [
     'http://localhost:8080',
     'https://frontend-jtxe8pi4y-johns-projects-fb03b396.vercel.app',
-    'https://frontend-3wvsi8lba-johns-projects-fb03b396.vercel.app'
+    'https://frontend-3wvsi8lba-johns-projects-fb03b396.vercel.app',
+    'https://homesbeforegrowth.org',
+    'https://www.homesbeforegrowth.org'
   ],
   credentials: true,
 }));
