@@ -11,6 +11,7 @@ import categoryRoutes from './routes/categories';
 import bankAccountRoutes from './routes/bankAccounts';
 import reportRoutes from './routes/reports';
 import publicRoutes from './routes/public';
+import setupRoutes from './routes/setup';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -81,6 +82,9 @@ app.get('/health', (req, res) => {
 
 // Public routes (no authentication required)
 app.use('/api/public', publicRoutes);
+
+// Setup routes (no authentication required)
+app.use('/api/setup', setupRoutes);
 
 // Authentication routes (with stricter rate limiting)
 app.use('/api/auth', loginLimiter, authRoutes);
