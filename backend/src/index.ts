@@ -127,4 +127,5 @@ app.listen(PORT, () => {
   console.log(`🚀 HBG Budget API server running on port ${PORT}`);
   console.log(`📊 Dashboard: http://localhost:${PORT}/health`);
   console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔧 CORS configured for HBG frontend deployments`);
 }); 
