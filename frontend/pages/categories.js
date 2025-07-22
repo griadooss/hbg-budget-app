@@ -246,7 +246,7 @@ export default function Categories() {
                           <p className="mt-1 text-sm text-gray-600">{category.description}</p>
                         )}
                         <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-                          <span>Created: {new Date(category.createdAt).toLocaleDateString('en-AU')}</span>
+                          <span>Created: {category.createdAt ? new Date(category.createdAt).toLocaleDateString('en-AU') : 'System Default'}</span>
                           {category.subCategories && category.subCategories.length > 0 && (
                             <span>{category.subCategories.length} subcategories</span>
                           )}
