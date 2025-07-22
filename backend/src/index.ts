@@ -73,6 +73,9 @@ app.use(cors({
     'https://frontend-flzlcgoqw-johns-projects-fb03b396.vercel.app',
     'https://frontend-p6dsj8he8-johns-projects-fb03b396.vercel.app',
     'https://frontend-2cgr7ptue-johns-projects-fb03b396.vercel.app', // Added latest deployment
+    'https://hbg-budget-8amanhgye-hbgs-projects-fb03b396.vercel.app', // Added new HBG deployment
+    'https://hbg-budget.vercel.app', // Added clean HBG domain
+    'https://hbg-budget-p5o2zljwn-hbgs-projects-fb03b396.vercel.app', // Added latest force deployment
     'https://homesbeforegrowth.org',
     'https://www.homesbeforegrowth.org'
   ],
