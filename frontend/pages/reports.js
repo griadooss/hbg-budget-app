@@ -299,7 +299,7 @@ export default function Reports() {
                   )}
 
                   {/* No Data Message */}
-                  {(!reports.recentTransactions || reports.recentTransactions.length === 0) && (
+                  {(!reports || reports.summary.transactionCount === 0) && (
                     <div className="bg-white rounded-lg shadow p-6 text-center">
                       <div className="text-gray-400 text-6xl mb-4">📊</div>
                       <h3 className="text-lg font-medium text-gray-900 mb-2">No Transactions Yet</h3>
