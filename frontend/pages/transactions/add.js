@@ -41,10 +41,10 @@ export default function AddTransaction() {
     try {
       // Fetch categories, subcategories, and bank accounts
       const [categoriesRes, bankAccountsRes] = await Promise.all([
-        fetch('http://localhost:4000/api/categories', {
+        fetch('https://hbg-budget-app-7.onrender.com/api/categories', {
           headers: { 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://localhost:4000/api/bank-accounts', {
+        fetch('https://hbg-budget-app-7.onrender.com/api/bank-accounts', {
           headers: { 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -78,7 +78,7 @@ export default function AddTransaction() {
     if (categoryId) {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:4000/api/categories/${categoryId}/subcategories`, {
+        const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/categories/${categoryId}/subcategories`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -131,7 +131,7 @@ export default function AddTransaction() {
       
 
       
-      const response = await fetch('http://localhost:4000/api/transactions', {
+      const response = await fetch('https://hbg-budget-app-7.onrender.com/api/transactions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

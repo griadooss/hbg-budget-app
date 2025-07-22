@@ -24,7 +24,7 @@ export default function Transactions() {
   const fetchTransactions = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/transactions`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/transactions`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

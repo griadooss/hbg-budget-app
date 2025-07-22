@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   const fetchFinancialSummary = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/public/financial-summary`);
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/public/financial-summary`);
       const data = await response.json();
       
       if (response.ok) {

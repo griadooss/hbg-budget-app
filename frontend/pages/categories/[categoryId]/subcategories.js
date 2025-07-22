@@ -26,7 +26,7 @@ export default function Subcategories() {
   const fetchCategory = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/categories/${categoryId}`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/categories/${categoryId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -46,7 +46,7 @@ export default function Subcategories() {
   const fetchSubcategories = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/categories/${categoryId}/subcategories`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/categories/${categoryId}/subcategories`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -70,7 +70,7 @@ export default function Subcategories() {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/categories/${categoryId}/subcategories`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/categories/${categoryId}/subcategories`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export default function Subcategories() {
   const handleUpdateSubcategory = async (subcategoryId, updatedData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/subcategories/${subcategoryId}`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/subcategories/${subcategoryId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export default function Subcategories() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:4000/api/subcategories/${subcategoryId}`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/subcategories/${subcategoryId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

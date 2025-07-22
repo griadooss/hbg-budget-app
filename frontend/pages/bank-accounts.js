@@ -35,7 +35,7 @@ export default function BankAccounts() {
 
   const fetchBankAccounts = async (token) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/bank-accounts`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/bank-accounts`, {
         headers: {
           'Authorization': `Bearer ${token || localStorage.getItem('token')}`
         }
@@ -61,7 +61,7 @@ export default function BankAccounts() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/bank-accounts`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/bank-accounts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export default function BankAccounts() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/api/bank-accounts/${accountId}`, {
+      const response = await fetch(`https://hbg-budget-app-7.onrender.com/api/bank-accounts/${accountId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
