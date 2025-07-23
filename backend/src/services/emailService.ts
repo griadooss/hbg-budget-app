@@ -13,22 +13,30 @@ class EmailService {
   private transporter: nodemailer.Transporter;
 
   constructor() {
-    // For development, use a test account or configure your email provider
-    this.transporter = nodemailer.createTransporter({
-      service: 'gmail', // You can change this to your email provider
-      auth: {
-        user: process.env.EMAIL_USER || 'your-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'your-app-password'
-      }
-    });
+    // Only create transporter if email is configured
+    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      this.transporter = nodemailer.createTransporter({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        }
+      });
+      console.log('📧 Email service initialized with Gmail');
+    } else {
+      console.log('📧 Email service: Not configured (EMAIL_USER and EMAIL_PASS required)');
+      this.transporter = null;
+    }
     
-    // Log email configuration (without sensitive data)
-    console.log('📧 Email service initialized');
-    console.log('📧 Email user:', process.env.EMAIL_USER ? 'Configured' : 'Not configured');
     console.log('📧 Admin email:', process.env.ADMIN_EMAIL || 'admin@homesbeforegrowth.org');
   }
 
   async sendEmail(options: EmailOptions): Promise<boolean> {
+    if (!this.transporter) {
+      console.log('📧 Email not sent: Email service not configured');
+      return false;
+    }
+
     try {
       const mailOptions = {
         from: process.env.EMAIL_USER || 'noreply@homesbeforegrowth.org',
