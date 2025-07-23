@@ -13,6 +13,13 @@ class EmailService {
   private transporter: nodemailer.Transporter | null;
 
   constructor() {
+    console.log('📧 Email service initialization...');
+    console.log('📧 EMAIL_USER:', process.env.EMAIL_USER ? 'SET' : 'NOT SET');
+    console.log('📧 EMAIL_PASS:', process.env.EMAIL_PASS ? 'SET' : 'NOT SET');
+    console.log('📧 SMTP_HOST:', process.env.SMTP_HOST || 'NOT SET');
+    console.log('📧 SMTP_PORT:', process.env.SMTP_PORT || 'NOT SET');
+    console.log('📧 ADMIN_EMAIL:', process.env.ADMIN_EMAIL || 'NOT SET');
+    
     // Only create transporter if email is configured
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       const emailService = this.detectEmailService(process.env.EMAIL_USER);
