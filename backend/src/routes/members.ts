@@ -87,16 +87,16 @@ router.post('/signup', async (req, res) => {
     try {
       console.log('📧 Attempting to send admin notification...');
       // Send admin notification
-      await emailService.sendAdminNotification(member);
+      await emailService.sendNewMemberNotification(member);
       console.log('📧 Admin notification sent successfully');
       
       console.log('📧 Attempting to send welcome email...');
       // Send welcome email to member
       await emailService.sendWelcomeEmail(member);
       console.log('📧 Welcome email sent successfully');
-    } catch (emailError) {
+    } catch (emailError: any) {
       console.error('❌ Email sending failed:', emailError);
-      console.error('❌ Error details:', emailError.message);
+      console.error('❌ Error details:', emailError?.message || 'Unknown error');
       // Don't fail the signup if emails fail
     }
 
