@@ -246,7 +246,6 @@ router.put('/:id', async (req, res) => {
 
     // Remove fields that shouldn't be updated
     delete updateData.id;
-    delete updateData.email; // Email should be updated separately
     delete updateData.signupDate;
     delete updateData.createdAt;
 
