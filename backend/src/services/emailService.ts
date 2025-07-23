@@ -10,7 +10,7 @@ interface EmailOptions {
 }
 
 class EmailService {
-  private transporter: nodemailer.Transporter;
+  private transporter: nodemailer.Transporter | null;
 
   constructor() {
     // Only create transporter if email is configured
