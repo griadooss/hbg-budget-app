@@ -12,6 +12,7 @@ import bankAccountRoutes from './routes/bankAccounts';
 import reportRoutes from './routes/reports';
 import publicRoutes from './routes/public';
 import setupRoutes from './routes/setup';
+import memberRoutes from './routes/members';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -110,6 +111,9 @@ app.use('/api/transactions', authenticateToken, transactionRoutes);
 app.use('/api/categories', authenticateToken, categoryRoutes);
 app.use('/api/bank-accounts', authenticateToken, bankAccountRoutes);
 app.use('/api/reports', authenticateToken, reportRoutes);
+
+// Member routes (public signup, protected management)
+app.use('/api/members', memberRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorHandler);

@@ -210,4 +210,93 @@ model SystemConfig {
   updatedAt DateTime @updatedAt
 
   @@map("system_config")
+}
+
+// Member Management
+model Member {
+  id              String   @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String   @unique
+  postcode        String
+  phone           String?
+  
+  // Member status
+  status          String   @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  memberType      String   @default("SUPPORTER") // SUPPORTER, VOLUNTEER, DONOR, OFFICIAL
+  
+  // Communication preferences
+  newsletterOptIn Boolean  @default(true)
+  emailOptIn      Boolean  @default(true)
+  smsOptIn        Boolean  @default(false)
+  
+  // Location and demographics
+  state           String?
+  city            String?
+  electorate      String?
+  
+  // Engagement tracking
+  signupSource    String?  // WEBSITE, SOCIAL_MEDIA, REFERRAL, EVENT
+  signupDate      DateTime @default(now())
+  lastActivity    DateTime @default(now())
+  
+  // Notes and internal tracking
+  notes           String?
+  tags            String?  // JSON array of tags for categorization
+  
+  // Audit trail
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  subscriptions   MemberSubscription[]
+  activities      MemberActivity[]
+
+  @@map("members")
+}
+
+// Member Subscriptions and Communications
+model MemberSubscription {
+  id          String   @id @default(cuid())
+  member      Member   @relation(fields: [memberId], references: [id])
+  memberId    String
+  
+  // Subscription details
+  type        String   // NEWSLETTER, UPDATES, CAMPAIGN, VOLUNTEER
+  status      String   @default("ACTIVE") // ACTIVE, UNSUBSCRIBED, BOUNCED
+  
+  // Communication tracking
+  lastSent    DateTime?
+  openCount   Int      @default(0)
+  clickCount  Int      @default(0)
+  
+  // Unsubscribe tracking
+  unsubscribedAt DateTime?
+  unsubscribeReason String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([memberId, type])
+  @@map("member_subscriptions")
+}
+
+// Member Activity and Engagement
+model MemberActivity {
+  id          String   @id @default(cuid())
+  member      Member   @relation(fields: [memberId], references: [id])
+  memberId    String
+  
+  // Activity details
+  type        String   // SIGNUP, EMAIL_OPEN, EMAIL_CLICK, DONATION, VOLUNTEER, EVENT_ATTENDED
+  description String?
+  
+  // Activity data
+  metadata    String?  // JSON object with additional data
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime @default(now())
+
+  @@map("member_activities")
 } 
