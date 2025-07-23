@@ -21,6 +21,11 @@ class EmailService {
         pass: process.env.EMAIL_PASS || 'your-app-password'
       }
     });
+    
+    // Log email configuration (without sensitive data)
+    console.log('📧 Email service initialized');
+    console.log('📧 Email user:', process.env.EMAIL_USER ? 'Configured' : 'Not configured');
+    console.log('📧 Admin email:', process.env.ADMIN_EMAIL || 'admin@homesbeforegrowth.org');
   }
 
   async sendEmail(options: EmailOptions): Promise<boolean> {
