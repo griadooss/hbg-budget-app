@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import emailService from '../services/emailService';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -81,6 +82,18 @@ router.post('/signup', async (req, res) => {
     });
 
     console.log(`✅ New member signed up: ${firstName} ${lastName} (${email})`);
+
+    // Send email notifications (non-blocking)
+    try {
+      // Send admin notification
+      await emailService.sendNewMemberNotification(member);
+      
+      // Send welcome email to member
+      await emailService.sendWelcomeEmail(member);
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Don't fail the signup if emails fail
+    }
 
     res.status(201).json({
       message: 'Member signed up successfully',
