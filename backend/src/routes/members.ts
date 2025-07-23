@@ -85,13 +85,18 @@ router.post('/signup', async (req, res) => {
 
     // Send email notifications (non-blocking)
     try {
+      console.log('📧 Attempting to send admin notification...');
       // Send admin notification
-      await emailService.sendNewMemberNotification(member);
+      await emailService.sendAdminNotification(member);
+      console.log('📧 Admin notification sent successfully');
       
+      console.log('📧 Attempting to send welcome email...');
       // Send welcome email to member
       await emailService.sendWelcomeEmail(member);
+      console.log('📧 Welcome email sent successfully');
     } catch (emailError) {
-      console.error('Email sending failed:', emailError);
+      console.error('❌ Email sending failed:', emailError);
+      console.error('❌ Error details:', emailError.message);
       // Don't fail the signup if emails fail
     }
 
@@ -328,6 +333,51 @@ router.post('/:id/unsubscribe', async (req, res) => {
     console.error('Unsubscribe error:', error);
     res.status(500).json({
       error: 'Failed to unsubscribe member',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Delete member
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if member exists
+    const member = await prisma.member.findUnique({
+      where: { id }
+    });
+
+    if (!member) {
+      return res.status(404).json({
+        error: 'Member not found'
+      });
+    }
+
+    // Delete related records first
+    await prisma.memberActivity.deleteMany({
+      where: { memberId: id }
+    });
+
+    await prisma.memberSubscription.deleteMany({
+      where: { memberId: id }
+    });
+
+    // Delete the member
+    await prisma.member.delete({
+      where: { id }
+    });
+
+    console.log(`🗑️ Member deleted: ${member.firstName} ${member.lastName} (${member.email})`);
+
+    res.json({
+      message: 'Member deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('Delete member error:', error);
+    res.status(500).json({
+      error: 'Failed to delete member',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
