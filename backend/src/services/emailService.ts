@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ class EmailService {
   constructor() {
     // Only create transporter if email is configured
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      this.transporter = nodemailer.createTransporter({
+      this.transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.EMAIL_USER,
