@@ -15,20 +15,46 @@ class EmailService {
   constructor() {
     // Only create transporter if email is configured
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      this.transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-      console.log('📧 Email service initialized with Gmail');
+      const emailService = this.detectEmailService(process.env.EMAIL_USER);
+      
+      if (emailService === 'custom') {
+        // Custom domain configuration
+        this.transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST || 'smtp.homesbeforegrowth.org',
+          port: parseInt(process.env.SMTP_PORT || '587'),
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+        console.log('📧 Email service initialized with custom domain');
+      } else {
+        // Standard email providers
+        this.transporter = nodemailer.createTransport({
+          service: emailService,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        });
+        console.log(`📧 Email service initialized with ${emailService}`);
+      }
     } else {
       console.log('📧 Email service: Not configured (EMAIL_USER and EMAIL_PASS required)');
       this.transporter = null;
     }
     
     console.log('📧 Admin email:', process.env.ADMIN_EMAIL || 'admin@homesbeforegrowth.org');
+  }
+
+  private detectEmailService(email: string): string {
+    if (email.includes('@gmail.com')) return 'gmail';
+    if (email.includes('@outlook.com') || email.includes('@hotmail.com')) return 'outlook';
+    if (email.includes('@yahoo.com')) return 'yahoo';
+    if (email.includes('@protonmail.com')) return 'protonmail';
+    if (email.includes('@homesbeforegrowth.org')) return 'custom'; // Custom domain
+    return 'gmail'; // default fallback
   }
 
   async sendEmail(options: EmailOptions): Promise<boolean> {
